@@ -1,0 +1,28 @@
+{
+  "name": "studenthtmlnetlify",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "netlify dev",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:noop": "echo \"Nothing to build\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bistuwangqiyuan/studenthtmlnetlify.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bistuwangqiyuan/studenthtmlnetlify/issues"
+  },
+  "homepage": "https://github.com/bistuwangqiyuan/studenthtmlnetlify#readme",
+  "description": "",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.2.3",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.16.3"
+  }
+}

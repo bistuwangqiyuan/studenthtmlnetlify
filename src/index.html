@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>学生信息管理系统</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="app-header">
+        <div class="brand">
+          <span class="brand-logo" aria-hidden="true">🎓</span>
+          <div class="brand-text">
+            <h1>学生信息管理系统</h1>
+            <p>面向管理员的教务数据管理平台</p>
+          </div>
+        </div>
+        <div class="admin-meta">
+          <div class="admin-details" id="admin-details">
+            <span class="admin-name" id="admin-name"></span>
+            <span class="admin-time" id="admin-time"></span>
+          </div>
+          <button class="btn btn-outlined" id="logout-button" type="button">
+            退出登录
+          </button>
+        </div>
+      </header>
+
+      <main class="app-main">
+        <section class="auth-section" id="auth-section">
+          <div class="card">
+            <div class="card-header">
+              <h2>管理员登录 / 注册</h2>
+              <p>请输入管理员账号信息以访问管理面板。</p>
+            </div>
+            <div class="tab-bar" role="tablist">
+              <button class="tab active" data-target="login-form" type="button" role="tab">
+                登录
+              </button>
+              <button class="tab" data-target="register-form" type="button" role="tab">
+                注册
+              </button>
+            </div>
+            <div class="card-body">
+              <form id="login-form" class="auth-form active" autocomplete="on">
+                <label>
+                  <span>用户名</span>
+                  <input type="text" name="username" placeholder="请输入用户名" required />
+                </label>
+                <label>
+                  <span>密码</span>
+                  <input type="password" name="password" placeholder="请输入密码" required />
+                </label>
+                <button class="btn btn-primary" type="submit">立即登录</button>
+              </form>
+
+              <form id="register-form" class="auth-form" autocomplete="off">
+                <p class="form-tip">
+                  若系统已有管理员账号，请先登录再创建新的管理员。
+                </p>
+                <label>
+                  <span>用户名</span>
+                  <input type="text" name="username" placeholder="设置新的用户名" required />
+                </label>
+                <label>
+                  <span>密码</span>
+                  <input type="password" name="password" placeholder="设置新的密码" required minlength="6" />
+                </label>
+                <button class="btn btn-primary" type="submit">创建管理员</button>
+              </form>
+            </div>
+            <div class="card-footer">
+              <p id="auth-message" class="message"></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="dashboard hidden" id="dashboard">
+          <div class="info-banner">
+            <h2>欢迎回来，<span id="greeting-name"></span>！</h2>
+            <p>请在下方选择模块，管理学生、课程与教师信息。</p>
+          </div>
+
+          <nav class="module-tabs" role="tablist">
+            <button class="module-tab active" data-panel="students-panel" type="button" role="tab">
+              学生信息
+            </button>
+            <button class="module-tab" data-panel="courses-panel" type="button" role="tab">
+              课程信息
+            </button>
+            <button class="module-tab" data-panel="teachers-panel" type="button" role="tab">
+              教师信息
+            </button>
+          </nav>
+
+          <div class="panel" id="students-panel">
+            <div class="panel-header">
+              <div>
+                <h3>学生信息管理</h3>
+                <p>新增、编辑、删除学生信息，并可按姓名或学号快速检索。</p>
+              </div>
+              <div class="search-group">
+                <label>
+                  <span class="sr-only">搜索学生</span>
+                  <input
+                    type="search"
+                    id="student-search"
+                    placeholder="按姓名、学号或专业搜索"
+                  />
+                </label>
+              </div>
+            </div>
+
+            <div class="responsive-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>学号</th>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>年龄</th>
+                    <th>专业</th>
+                    <th>班级</th>
+                    <th>联系方式</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="students-table-body"></tbody>
+              </table>
+            </div>
+
+            <form id="student-form" class="entity-form">
+              <h4 id="student-form-title">新增学生</h4>
+              <div class="form-grid">
+                <label>
+                  <span>学号*</span>
+                  <input type="text" name="studentNumber" required />
+                </label>
+                <label>
+                  <span>姓名*</span>
+                  <input type="text" name="name" required />
+                </label>
+                <label>
+                  <span>性别</span>
+                  <input type="text" name="gender" />
+                </label>
+                <label>
+                  <span>年龄</span>
+                  <input type="number" name="age" min="0" max="120" />
+                </label>
+                <label>
+                  <span>专业</span>
+                  <input type="text" name="major" />
+                </label>
+                <label>
+                  <span>班级</span>
+                  <input type="text" name="className" />
+                </label>
+                <label>
+                  <span>联系方式</span>
+                  <input type="text" name="contact" />
+                </label>
+                <label class="textarea-label">
+                  <span>备注</span>
+                  <textarea name="notes" rows="2"></textarea>
+                </label>
+              </div>
+              <div class="form-actions">
+                <button class="btn btn-primary" type="submit">保存</button>
+                <button class="btn btn-outlined" type="reset">重置</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="panel hidden" id="courses-panel">
+            <div class="panel-header">
+              <div>
+                <h3>课程信息管理</h3>
+                <p>维护课程基础信息与授课教师。</p>
+              </div>
+              <div class="search-group">
+                <label>
+                  <span class="sr-only">搜索课程</span>
+                  <input
+                    type="search"
+                    id="course-search"
+                    placeholder="按课程名称或课程代码搜索"
+                  />
+                </label>
+              </div>
+            </div>
+
+            <div class="responsive-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>课程代码</th>
+                    <th>课程名称</th>
+                    <th>学分</th>
+                    <th>授课教师</th>
+                    <th>简介</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="courses-table-body"></tbody>
+              </table>
+            </div>
+
+            <form id="course-form" class="entity-form">
+              <h4 id="course-form-title">新增课程</h4>
+              <div class="form-grid">
+                <label>
+                  <span>课程代码*</span>
+                  <input type="text" name="courseCode" required />
+                </label>
+                <label>
+                  <span>课程名称*</span>
+                  <input type="text" name="name" required />
+                </label>
+                <label>
+                  <span>学分</span>
+                  <input type="number" name="creditHours" min="0" max="20" />
+                </label>
+                <label>
+                  <span>授课教师</span>
+                  <input type="text" name="teacher" />
+                </label>
+                <label class="textarea-label">
+                  <span>课程简介</span>
+                  <textarea name="description" rows="2"></textarea>
+                </label>
+              </div>
+              <div class="form-actions">
+                <button class="btn btn-primary" type="submit">保存</button>
+                <button class="btn btn-outlined" type="reset">重置</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="panel hidden" id="teachers-panel">
+            <div class="panel-header">
+              <div>
+                <h3>教师信息管理</h3>
+                <p>记录教师基本信息，维护联系方式。</p>
+              </div>
+              <div class="search-group">
+                <label>
+                  <span class="sr-only">搜索教师</span>
+                  <input
+                    type="search"
+                    id="teacher-search"
+                    placeholder="按姓名、工号或部门搜索"
+                  />
+                </label>
+              </div>
+            </div>
+
+            <div class="responsive-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>工号</th>
+                    <th>姓名</th>
+                    <th>职称</th>
+                    <th>邮箱</th>
+                    <th>电话</th>
+                    <th>部门</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="teachers-table-body"></tbody>
+              </table>
+            </div>
+
+            <form id="teacher-form" class="entity-form">
+              <h4 id="teacher-form-title">新增教师</h4>
+              <div class="form-grid">
+                <label>
+                  <span>工号*</span>
+                  <input type="text" name="teacherCode" required />
+                </label>
+                <label>
+                  <span>姓名*</span>
+                  <input type="text" name="name" required />
+                </label>
+                <label>
+                  <span>职称</span>
+                  <input type="text" name="title" />
+                </label>
+                <label>
+                  <span>邮箱</span>
+                  <input type="email" name="email" />
+                </label>
+                <label>
+                  <span>电话</span>
+                  <input type="text" name="phone" maxlength="20" />
+                </label>
+                <label>
+                  <span>部门</span>
+                  <input type="text" name="department" />
+                </label>
+              </div>
+              <div class="form-actions">
+                <button class="btn btn-primary" type="submit">保存</button>
+                <button class="btn btn-outlined" type="reset">重置</button>
+              </div>
+            </form>
+          </div>
+
+          <div id="global-message" class="message"></div>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <p>© <span id="current-year"></span> 学生信息管理系统 · 基于 Netlify 与 Neon 数据库部署</p>
+      </footer>
+    </div>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
+
