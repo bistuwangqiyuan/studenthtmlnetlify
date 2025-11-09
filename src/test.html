@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>API 测试</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 50px auto; }
+        .log { background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>学生信息管理系统 - API 测试</h1>
+    <div id="logs"></div>
+    
+    <script>
+        const log = (msg, type = 'info') => {
+            const div = document.createElement('div');
+            div.className = `log ${type}`;
+            div.textContent = msg;
+            document.getElementById('logs').appendChild(div);
+        };
+
+        const test = async () => {
+            try {
+                // 1. 登录
+                log('正在登录...', 'info');
+                const loginRes = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: 'admin', password: 'admin' })
+                });
+                
+                if (!loginRes.ok) {
+                    const err = await loginRes.json();
+                    log(`❌ 登录失败: ${err.error}`, 'error');
+                    return;
+                }
+                
+                const { token } = await loginRes.json();
+                log(`✅ 登录成功! Token: ${token.substring(0, 30)}...`, 'success');
+                
+                // 2. 获取学生列表
+                log('正在获取学生列表...', 'info');
+                const studentsRes = await fetch('/api/students', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!studentsRes.ok) {
+                    const err = await studentsRes.json();
+                    log(`❌ 获取学生失败 (${studentsRes.status}): ${err.error}`, 'error');
+                    
+                    // 查看详细错误
+                    log(`响应头: ${JSON.stringify(Object.fromEntries(studentsRes.headers.entries()))}`, 'info');
+                } else {
+                    const data = await studentsRes.json();
+                    log(`✅ 获取学生成功! 共 ${data.students.length} 条数据`, 'success');
+                    if (data.students.length > 0) {
+                        log(`第一条数据: ${JSON.stringify(data.students[0])}`, 'info');
+                    }
+                }
+                
+            } catch (error) {
+                log(`❌ 异常: ${error.message}`, 'error');
+                console.error(error);
+            }
+        };
+        
+        test();
+    </script>
+</body>
+</html>
+

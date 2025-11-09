@@ -5,9 +5,12 @@
 
 [build]
   publish = "src"
-  command = "npm run build:noop"
+  command = "echo 'Static site - no build required'"
 
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
+# Explicitly disable Next.js plugin if it exists
+[build.environment]
+  NODE_VERSION = "18"

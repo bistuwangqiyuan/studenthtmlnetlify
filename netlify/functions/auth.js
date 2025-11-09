@@ -21,8 +21,9 @@ exports.handler = async (event) => {
       return handleOptions();
     }
 
-    const segments = getPathSegments(event);
-    const action = segments[1] || '';
+    // 从路径中提取操作：/api/auth/login -> login
+    const path = event.path || '';
+    const action = path.split('/').filter(Boolean).pop() || 'login'; // 默认为 login
 
     if (event.httpMethod === 'POST' && action === 'login') {
       const { username, password } = parseJsonBody(event);
